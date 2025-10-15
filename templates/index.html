@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management Pro - Next Gen Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * { 
+            font-family: 'Inter', sans-serif; 
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Light Mode (Default) */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1f2937;
+        }
+
+        .glass-light {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            color: #1f2937;
+        }
+
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.15);
+            color: #1f2937;
+        }
+
+        .text-contrast-light { color: #1f2937; }
+        .text-muted-light { color: #6b7280; }
+        .text-bright-light { color: #374151; }
+
+        /* Dark Mode */
+        body.dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: #f1f5f9;
+        }
+
+        body.dark .glass-light {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            color: #f1f5f9;
+        }
+
+        body.dark .glass-card-light {
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
+            color: #f1f5f9;
+        }
+
+        body.dark .text-contrast-light { color: #f1f5f9; }
+        body.dark .text-muted-light { color: #94a3b8; }
+        body.dark .text-bright-light { color: #e2e8f0; }
+
+        /* Input styles for better contrast */
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #1f2937;
+        }
+
+        .input-field::placeholder {
+            color: #6b7280;
+        }
+
+        body.dark .input-field {
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(148, 163, 184, 0.3);
+            color: #f1f5f9;
+        }
+
+        body.dark .input-field::placeholder {
+            color: #94a3b8;
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.33); }
+            40%, 50% { opacity: 0; }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 4s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        body.dark .particle {
+            background: rgba(139, 92, 246, 0.6);
+        }
+
+        .theme-transition {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden relative theme-transition">
+    <!-- Floating Particles -->
+    <div id="particles-container" class="fixed inset-0 pointer-events-none -z-10"></div>
+
+    <!-- Dark/Light Mode Toggle -->
+    <div class="fixed top-6 right-6 z-50">
+        <button id="themeToggle" class="glass-light rounded-full p-4 text-xl hover:glow transition-all duration-300 text-contrast-light">
+            <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Hero Header -->
+        <header class="text-center mb-16 relative">
+            <div class="glass-light rounded-3xl p-12 mb-8 relative overflow-hidden">
+                <div class="absolute inset-0 shimmer"></div>
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-semibold mb-6 floating">
+                        <i class="fas fa-sparkles"></i>
+                        <span>NEXT-GEN CONTACT MANAGER</span>
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                        <span class="gradient-text">Contact Management</span>
+                        <br>
+                        <span class="text-contrast-light">Reimagined</span>
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-muted-light max-w-3xl mx-auto mb-8 font-medium">
+                        Experience the future of contact management with stunning UI, lightning-fast performance, and next-level user experience.
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <div class="flex items-center gap-2 glass-card-light px-4 py-2 rounded-full">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span class="text-contrast-light font-medium">Real-time Search</span>
+                        </div>
+                        <div class="flex items-center gap-2 glass-card-light px-4 py-2 rounded-full">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span class="text-contrast-light font-medium">Smart Validation</span>
+                        </div>
+                        <div class="flex items-center gap-2 glass-card-light px-4 py-2 rounded-full">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span class="text-contrast-light font-medium">Cloud Sync Ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Live Statistics Dashboard -->
+        <section class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card-light rounded-2xl p-8 text-center card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 text-blue-500">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="text-4xl font-black text-contrast-light mb-2" id="totalContacts">{{ stats.total }}</div>
+                        <div class="text-blue-600 font-medium uppercase tracking-widest text-sm">Total Contacts</div>
+                        <div class="mt-4 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-green-400 rounded-full pulse-ring"></div>
+                            <span class="text-green-600 text-xs ml-2 font-semibold">Live</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card-light rounded-2xl p-8 text-center card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 text-purple-500">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="text-4xl font-black text-contrast-light mb-2" id="emailContacts">{{ stats.with_email }}</div>
+                        <div class="text-purple-600 font-medium uppercase tracking-widest text-sm">With Email</div>
+                        <div class="mt-4 text-xs text-muted-light">
+                            <span id="emailPercentage">0%</span> completion rate
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card-light rounded-2xl p-8 text-center card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+                    <div class="relative z-10">
+                        <div class="text-5xl mb-4 text-emerald-500">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="text-4xl font-black text-contrast-light mb-2" id="addressContacts">{{ stats.with_address }}</div>
+                        <div class="text-emerald-600 font-medium uppercase tracking-widest text-sm">With Address</div>
+                        <div class="mt-4 text-xs text-muted-light">
+                            <span id="addressPercentage">0%</span> completion rate
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Search & Actions -->
+        <section class="mb-12">
+            <div class="glass-light rounded-3xl p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <!-- Search Bar -->
+                    <div class="lg:col-span-2 relative">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg"></i>
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="Search contacts... (name, phone, email, address)"
+                                class="w-full pl-14 pr-12 py-4 input-field rounded-2xl text-lg font-medium focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:border-blue-400 transition-all duration-300"
+                            >
+                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                                <div class="bg-blue-500 text-white px-3 py-1 rounded-lg text-xs font-semibold">
+                                    ⌘K
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4">
+                        <button 
+                            onclick="openAddModal()" 
+                            class="flex-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 hover:from-blue-700 hover:via-purple-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-3 text-lg glow"
+                        >
+                            <i class="fas fa-plus"></i>
+                            <span>Add Contact</span>
+                        </button>
+                        
+                        <button 
+                            onclick="refreshContacts()" 
+                            class="glass-card-light hover:bg-blue-50 text-contrast-light font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center border border-blue-200"
+                        >
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Filters -->
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <button class="filter-btn bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-all" data-filter="all">
+                        <i class="fas fa-users mr-2"></i>All Contacts
+                    </button>
+                    <button class="filter-btn glass-card-light text-contrast-light px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-100 transition-all border border-blue-200" data-filter="email">
+                        <i class="fas fa-envelope mr-2"></i>With Email
+                    </button>
+                    <button class="filter-btn glass-card-light text-contrast-light px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-100 transition-all border border-blue-200" data-filter="address">
+                        <i class="fas fa-map-marker-alt mr-2"></i>With Address
+                    </button>
+                    <button class="filter-btn glass-card-light text-contrast-light px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-100 transition-all border border-blue-200" data-filter="recent">
+                        <i class="fas fa-clock mr-2"></i>Recently Added
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacts Grid -->
+        <section class="mb-16">
+            <div class="glass-light rounded-3xl p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-3xl font-bold text-contrast-light flex items-center gap-3">
+                        <i class="fas fa-address-card text-blue-500"></i>
+                        <span>Your Contacts</span>
+                        <span id="contactCount" class="bg-blue-500 text-white px-3 py-1 rounded-full text-lg font-semibold">0</span>
+                    </h2>
+                    
+                    <div class="flex gap-2">
+                        <button id="gridView" class="glass-card-light p-3 rounded-lg text-contrast-light hover:bg-blue-100 transition-all border border-blue-200">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button id="listView" class="glass-card-light p-3 rounded-lg text-contrast-light hover:bg-blue-100 transition-all border border-blue-200">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="contactsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {% for contact in contacts %}
+                    <div class="contact-card glass-card-light rounded-2xl p-6 card-hover relative overflow-hidden group border border-blue-100">
+                        <!-- Contact Avatar -->
+                        <div class="flex items-center mb-4">
+                            <div class="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
+                                {{ contact.name[0] }}
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-contrast-light mb-1">{{ contact.name }}</h3>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-green-600 text-sm font-medium">Active</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Details -->
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center gap-3 text-muted-light">
+                                <i class="fas fa-phone w-5 text-blue-500"></i>
+                                <span class="font-medium">{{ contact.phone }}</span>
+                            </div>
+                            
+                            {% if contact.email %}
+                            <div class="flex items-center gap-3 text-muted-light">
+                                <i class="fas fa-envelope w-5 text-purple-500"></i>
+                                <span class="font-medium truncate">{{ contact.email }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if contact.address %}
+                            <div class="flex items-center gap-3 text-muted-light">
+                                <i class="fas fa-map-marker-alt w-5 text-emerald-500"></i>
+                                <span class="font-medium truncate">{{ contact.address }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <button 
+                                onclick="openEditModal('{{ contact.name }}', '{{ contact.phone }}', '{{ contact.email }}', '{{ contact.address }}')"
+                                class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
+                            >
+                                <i class="fas fa-edit"></i>
+                                <span>Edit</span>
+                            </button>
+                            
+                            <button 
+                                onclick="deleteContact('{{ contact.name }}')"
+                                class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300"
+                            >
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+
+                        <!-- Gradient Border -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="text-center py-16 hidden">
+                    <div class="text-8xl text-gray-400 mb-6">
+                        <i class="fas fa-address-book"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-contrast-light mb-4">No contacts found</h3>
+                    <p class="text-muted-light text-lg mb-8">Get started by adding your first contact</p>
+                    <button onclick="openAddModal()" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-8 rounded-2xl hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-plus mr-2"></i>Add Your First Contact
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Enhanced Modal -->
+    <div id="contactModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop bg-black/60 absolute inset-0" onclick="closeModal()"></div>
+        
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+            <div class="glass-light rounded-3xl w-full max-w-md transform transition-all duration-300 slide-in">
+                <!-- Modal Header -->
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-3xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 id="modalTitle" class="text-2xl font-bold text-white">Add New Contact</h3>
+                            <p class="text-blue-200 mt-1">Fill in the contact details below</p>
+                        </div>
+                        <button onclick="closeModal()" class="text-white/80 hover:text-white text-2xl transition-colors">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6">
+                    <form id="contactForm" class="space-y-6">
+                        <div>
+                            <label class="block text-contrast-light font-semibold mb-2">
+                                <i class="fas fa-user text-blue-500 mr-2"></i>Full Name *
+                            </label>
+                            <input 
+                                type="text" 
+                                id="contactName" 
+                                required
+                                class="w-full px-4 py-3 input-field rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="Enter full name"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-contrast-light font-semibold mb-2">
+                                <i class="fas fa-phone text-blue-500 mr-2"></i>Phone Number *
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="contactPhone" 
+                                required
+                                class="w-full px-4 py-3 input-field rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="Enter phone number"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-contrast-light font-semibold mb-2">
+                                <i class="fas fa-envelope text-purple-500 mr-2"></i>Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                id="contactEmail"
+                                class="w-full px-4 py-3 input-field rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                placeholder="Enter email address"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-contrast-light font-semibold mb-2">
+                                <i class="fas fa-map-marker-alt text-emerald-500 mr-2"></i>Address
+                            </label>
+                            <textarea 
+                                id="contactAddress"
+                                rows="3"
+                                class="w-full px-4 py-3 input-field rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+                                placeholder="Enter address"
+                            ></textarea>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="flex gap-3 pt-4">
+                            <button 
+                                type="button" 
+                                onclick="closeModal()"
+                                class="flex-1 glass-card-light text-contrast-light font-semibold py-3 px-6 rounded-xl hover:bg-gray-100 transition-all border border-gray-200"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                type="submit" 
+                                id="submitBtn"
+                                class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105"
+                            >
+                                <span class="btn-text">Save Contact</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-50 space-y-3"></div>
+
+    <!-- Enhanced JavaScript -->
+    <script>
+        // Global Variables
+        let isEditMode = false;
+        let editingContactName = '';
+        let currentFilter = 'all';
+        let currentView = 'grid';
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            createParticles();
+            updateStats();
+            
+            // Load theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+                document.getElementById('themeIcon').className = 'fas fa-sun';
+            }
+        });
+
+        function initializeApp() {
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', handleFilter);
+            });
+
+            // View toggle
+            document.getElementById('gridView').addEventListener('click', () => setView('grid'));
+            document.getElementById('listView').addEventListener('click', () => setView('list'));
+
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboardShortcuts);
+        }
+
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            body.classList.toggle('dark');
+            
+            if (body.classList.contains('dark')) {
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Particle System
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => createParticle(container), i * 200);
+            }
+        }
+
+        function createParticle(container) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 4 + 's';
+            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            container.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+                createParticle(container);
+            }, 5000);
+        }
+
+        // Search Functionality
+        function handleSearch(event) {
+            const query = event.target.value.trim();
+            searchContacts(query);
+        }
+
+        function searchContacts(query) {
+            fetch(`/search_contacts?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    renderContacts(data.contacts);
+                    updateContactCount(data.contacts.length);
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    showToast('Search failed. Please try again.', 'error');
+                });
+        }
+
+        // Filter Functionality
+        function handleFilter(event) {
+            const filter = event.target.dataset.filter;
+            currentFilter = filter;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-500', 'text-white');
+                btn.classList.add('glass-card-light', 'text-contrast-light', 'border', 'border-blue-200');
+            });
+            event.target.classList.remove('glass-card-light', 'text-contrast-light', 'border', 'border-blue-200');
+            event.target.classList.add('bg-blue-500', 'text-white');
+
+            applyFilter(filter);
+        }
+
+        function applyFilter(filter) {
+            const contacts = document.querySelectorAll('.contact-card');
+            let visibleCount = 0;
+
+            contacts.forEach(card => {
+                let shouldShow = true;
+
+                if (filter === 'email') {
+                    shouldShow = card.querySelector('.fa-envelope') !== null;
+                } else if (filter === 'address') {
+                    shouldShow = card.querySelector('.fa-map-marker-alt') !== null;
+                } else if (filter === 'recent') {
+                    shouldShow = true;
+                }
+
+                if (shouldShow) {
+                    card.style.display = 'block';
+                    card.classList.add('bounce-in');
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            updateContactCount(visibleCount);
+        }
+
+        // Contact Rendering
+        function renderContacts(contacts) {
+            const grid = document.getElementById('contactsGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (contacts.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            
+            grid.innerHTML = contacts.map((contact, index) => `
+                <div class="contact-card glass-card-light rounded-2xl p-6 card-hover relative overflow-hidden group border border-blue-100 bounce-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
+                            ${contact.name.charAt(0)}
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-contrast-light mb-1">${contact.name}</h3>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span class="text-green-600 text-sm font-medium">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3 text-muted-light">
+                            <i class="fas fa-phone w-5 text-blue-500"></i>
+                            <span class="font-medium">${contact.phone}</span>
+                        </div>
+                        
+                        ${contact.email ? `
+                        <div class="flex items-center gap-3 text-muted-light">
+                            <i class="fas fa-envelope w-5 text-purple-500"></i>
+                            <span class="font-medium truncate">${contact.email}</span>
+                        </div>
+                        ` : ''}
+                        
+                        ${contact.address ? `
+                        <div class="flex items-center gap-3 text-muted-light">
+                            <i class="fas fa-map-marker-alt w-5 text-emerald-500"></i>
+                            <span class="font-medium truncate">${contact.address}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <button 
+                            onclick="openEditModal('${contact.name}', '${contact.phone}', '${contact.email}', '${contact.address}')"
+                            class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
+                        >
+                            <i class="fas fa-edit"></i>
+                            <span>Edit</span>
+                        </button>
+                        
+                        <button 
+                            onclick="deleteContact('${contact.name}')"
+                            class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300"
+                        >
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none"></div>
+                </div>
+            `).join('');
+        }
+
+        // Modal Functions
+        function openAddModal() {
+            isEditMode = false;
+            editingContactName = '';
+            
+            document.getElementById('modalTitle').textContent = 'Add New Contact';
+            document.querySelector('.btn-text').textContent = 'Save Contact';
+            
+            // Clear form
+            document.getElementById('contactForm').reset();
+            document.getElementById('contactName').disabled = false;
+            
+            document.getElementById('contactModal').classList.remove('hidden');
+            document.getElementById('contactName').focus();
+        }
+
+        function openEditModal(name, phone, email, address) {
+            isEditMode = true;
+            editingContactName = name;
+            
+            document.getElementById('modalTitle').textContent = 'Edit Contact';
+            document.querySelector('.btn-text').textContent = 'Update Contact';
+            
+            // Fill form
+            document.getElementById('contactName').value = name;
+            document.getElementById('contactPhone').value = phone;
+            document.getElementById('contactEmail').value = email;
+            document.getElementById('contactAddress').value = address;
+            
+            document.getElementById('contactName').disabled = true;
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').classList.add('hidden');
+        }
+
+        // Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleFormSubmission();
+        });
+
+        function handleFormSubmission() {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalContent = submitBtn.innerHTML;
+            
+            // Show loading
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+            submitBtn.disabled = true;
+
+            const formData = {
+                name: document.getElementById('contactName').value.trim(),
+                phone: document.getElementById('contactPhone').value.trim(),
+                email: document.getElementById('contactEmail').value.trim(),
+                address: document.getElementById('contactAddress').value.trim()
+            };
+
+            const endpoint = isEditMode ? '/update_contact' : '/add_contact';
+            
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeModal();
+                    refreshContacts();
+                    updateStats(data.stats);
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Operation failed. Please try again.', 'error');
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Delete Contact
+        function deleteContact(name) {
+            if (!confirm(`Are you sure you want to delete ${name}?`)) return;
+
+            fetch('/delete_contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    refreshContacts();
+                    updateStats(data.stats);
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Delete failed. Please try again.', 'error');
+            });
+        }
+
+        // Utility Functions
+        function refreshContacts() {
+            document.getElementById('searchInput').value = '';
+            searchContacts('');
+        }
+
+        function updateStats(stats) {
+            if (stats) {
+                document.getElementById('totalContacts').textContent = stats.total;
+                document.getElementById('emailContacts').textContent = stats.with_email;
+                document.getElementById('addressContacts').textContent = stats.with_address;
+                
+                // Update percentages
+                const emailPercentage = stats.total > 0 ? Math.round((stats.with_email / stats.total) * 100) : 0;
+                const addressPercentage = stats.total > 0 ? Math.round((stats.with_address / stats.total) * 100) : 0;
+                
+                document.getElementById('emailPercentage').textContent = emailPercentage;
+                document.getElementById('addressPercentage').textContent = addressPercentage;
+            } else {
+                fetch('/get_stats')
+                    .then(response => response.json())
+                    .then(updateStats);
+            }
+        }
+
+        function updateContactCount(count) {
+            document.getElementById('contactCount').textContent = count;
+        }
+
+        function setView(view) {
+            currentView = view;
+            const grid = document.getElementById('contactsGrid');
+            
+            if (view === 'list') {
+                grid.classList.remove('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4');
+                grid.classList.add('grid-cols-1');
+            } else {
+                grid.classList.add('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4');
+            }
+        }
+
+        function handleKeyboardShortcuts(e) {
+            if (e.metaKey || e.ctrlKey) {
+                if (e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                } else if (e.key === 'n') {
+                    e.preventDefault();
+                    openAddModal();
+                }
+            }
+            
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+
+            const colors = {
+                success: 'from-emerald-500 to-teal-500',
+                error: 'from-red-500 to-pink-500',
+                warning: 'from-amber-500 to-orange-500',
+                info: 'from-blue-500 to-indigo-500'
+            };
+
+            toast.className = `glass-light p-4 rounded-2xl shadow-2xl transform transition-all duration-500 translate-x-full bg-gradient-to-r ${colors[type]} text-white flex items-center gap-3 min-w-[300px] border border-white/20`;
+            
+            toast.innerHTML = `
+                <i class="${icons[type]} text-xl"></i>
+                <span class="font-medium flex-1">${message}</span>
+                <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => toast.classList.remove('translate-x-full'), 100);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.remove(), 500);
+            }, 5000);
+        }
+
+        // Close modal on outside click
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
